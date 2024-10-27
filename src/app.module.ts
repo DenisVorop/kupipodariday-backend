@@ -9,6 +9,7 @@ import { OffersModule } from './offers/offers.module';
 import { User } from './users/entities/user.entity';
 import { Offer } from './offers/entities/offer.entity';
 import { Wish } from './wishes/entities/wish.entity';
+import { Wishlist } from './wishlists/entities/wishlist.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Wish } from './wishes/entities/wish.entity';
       username: 'postgres',
       password: '',
       database: 'postgres',
-      entities: [User, Offer, Wish],
+      entities: [User, Offer, Wish, Wishlist],
       synchronize: true,
     }),
     UsersModule,
