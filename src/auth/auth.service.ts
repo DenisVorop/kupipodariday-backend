@@ -3,6 +3,7 @@ import { UsersService } from '../users/users.service';
 import { PasswordService } from '../password/password.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -16,26 +17,25 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(
       createUserDto.password,
     );
-    const user = await this.usersService.create({
+    const { password: _, ...user } = await this.usersService.create({
       ...createUserDto,
       password: hashedPassword,
     });
     return user;
   }
 
-  async validateUser(username: string, password: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<User> {
     const user = await this.usersService.findOneByUsername(username);
     if (
       user &&
       (await this.passwordService.verifyPassword(password, user.password))
     ) {
-      const { password, ...result } = user;
-      return result;
+      return user;
     }
     return null;
   }
 
-  async login(user: any) {
+  async login(user: User) {
     const payload = { username: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
