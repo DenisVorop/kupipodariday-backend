@@ -60,7 +60,7 @@ export class UsersController {
 
   @Get('me/wishes')
   async findMeWishes(@Req() req: { user: User }) {
-    return this.wishesService.findUserWishes(req.user.id);
+    return this.wishesService.findUserWishes(req.user);
   }
 
   @Get(':username')
@@ -72,7 +72,7 @@ export class UsersController {
   async findOneWithWishes(@Param('username') username: string) {
     const user = await this.usersService.findOneByUsername(username);
 
-    return this.wishesService.findUserWishes(user.id);
+    return this.wishesService.findUserWishes(user);
   }
 
   @Post('find')

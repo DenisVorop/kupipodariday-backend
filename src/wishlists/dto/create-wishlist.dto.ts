@@ -13,4 +13,7 @@ export class CreateWishlistDto {
   @IsOptional()
   @IsUrl()
   image?: string;
+
+  @IsOptional()
+  itemsId?: number[];
 }

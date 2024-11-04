@@ -27,11 +27,11 @@ export class Wishlist {
   @IsUrl()
   image: string;
 
-  @OneToMany(() => Wish, (wish) => wish.owner)
+  @OneToMany(() => Wish, (wish) => wish.wishlist)
   items: Wish[];
 
   @ManyToOne(() => User, (user) => user.wishlists)
-  user: User;
+  owner: User;
 
   @CreateDateColumn()
   createdAt: Date;

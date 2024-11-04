@@ -54,7 +54,7 @@ export class User {
   @JoinTable()
   offers: Offer[];
 
-  @OneToMany(() => Wishlist, (wishlist) => wishlist.user)
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.owner)
   wishlists: Wishlist[];
 
   @CreateDateColumn()

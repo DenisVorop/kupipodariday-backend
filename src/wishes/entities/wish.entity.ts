@@ -1,6 +1,7 @@
 import { IsUrl, Length } from 'class-validator';
 import { Offer } from 'src/offers/entities/offer.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Wishlist } from 'src/wishlists/entities/wishlist.entity';
 import {
   Column,
   CreateDateColumn,
@@ -36,6 +37,9 @@ export class Wish {
 
   @ManyToOne(() => User, (user) => user.wishes)
   owner: User;
+
+  @ManyToOne(() => Wishlist, (user) => user.items)
+  wishlist: Wishlist;
 
   @Column()
   @Length(1, 1024)

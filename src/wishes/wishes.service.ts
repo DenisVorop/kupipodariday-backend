@@ -69,8 +69,10 @@ export class WishesService {
     return wish;
   }
 
-  async findUserWishes(userId: number): Promise<Wish[]> {
-    return await this.wishRepository.find({ where: { owner: { id: userId } } });
+  async findUserWishes(user: User): Promise<Wish[]> {
+    return await this.wishRepository.find({
+      where: { owner: { id: user.id } },
+    });
   }
 
   async copyWish(id: number, user: User): Promise<Wish> {
