@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Wish } from './entities/wish.entity';
@@ -31,7 +35,9 @@ export class WishesService {
       where: { id },
       relations: {
         owner: true,
-        offers: true,
+        offers: {
+          user: true,
+        },
       },
     });
   }
@@ -44,7 +50,7 @@ export class WishesService {
     const wish = await this.findOne(id);
 
     if (wish.owner.id !== user.id) {
-      throw new Error('Недостаточно прав для редактирования');
+      throw new BadRequestException('Недостаточно прав для редактирования');
     }
 
     await this.wishRepository.update(id, updateWishDto);
@@ -55,7 +61,7 @@ export class WishesService {
     const wish = await this.findOne(id);
 
     if (wish.owner.id !== user.id) {
-      throw new Error('Недостаточно прав для удаления');
+      throw new BadRequestException('Недостаточно прав для удаления');
     }
 
     await this.wishRepository.delete(id);
@@ -71,7 +77,7 @@ export class WishesService {
     const wish = await this.findOne(id);
 
     if (!wish) {
-      throw new Error('Такого подарка не существует');
+      throw new NotFoundException('Такого подарка не существует');
     }
 
     const wishData: CreateWishDto = {
@@ -101,7 +107,7 @@ export class WishesService {
       return await this.findOne(insertedWish.identifiers[0].id);
     } catch (err) {
       await queryRunner.rollbackTransaction();
-      throw err;
+      throw new Error('Что-то пошло не так');
     } finally {
       await queryRunner.release();
     }
