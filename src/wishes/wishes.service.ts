@@ -33,4 +33,8 @@ export class WishesService {
   async remove(id: number): Promise<void> {
     await this.wishRepository.delete(id);
   }
+
+  async findUserWishes(userId: number): Promise<Wish[]> {
+    return await this.wishRepository.find({ where: { owner: { id: userId } } });
+  }
 }
