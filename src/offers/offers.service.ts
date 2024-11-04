@@ -60,6 +60,7 @@ export class OffersService {
       await queryRunner.commitTransaction();
 
       return await this.findOne(insertedOffer.identifiers[0].id);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       await queryRunner.rollbackTransaction();
       throw new Error('Что-то пошло не так');
